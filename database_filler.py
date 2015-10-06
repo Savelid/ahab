@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
  
-from database_setup import Base, Overview, System, SystemStatus, SensorUnit, ControlUnit, DeepSystem, SCU, TopoSensor, ShallowSensor, DeepSensor
+from database_setup import Base, System, SystemStatus, SensorUnit, ControlUnit, DeepSystem, SCU, TopoSensor, ShallowSensor, DeepSensor
 from random import randint
 import datetime
 import random
@@ -37,16 +37,16 @@ for i in range(0,15):
 	session.add(system_status)
 	session.commit()
 
-# Add a few comments to Overview
-message1 = "Dependent sometimes additions recommend fat our. Direction has strangers now believing. Respect enjoyed gay far exposed parlors towards. Enjoyment use tolerably dependent listening men. No peculiar in handsome together unlocked do by. Article concern joy anxious did picture sir her. Although desirous not recurred disposed off shy you numerous securing."
-comment1 = Overview(datetime = CreateRandomDate(), message = message1, author = "Sven")
-session.add(comment1)
-session.commit()
-message2 = "Songs in oh other avoid it hours woman style. In myself family as if be agreed."
-comment2 = Overview(datetime = CreateRandomDate(), message = message2, author = "Birger")
-session.add(comment2)
-session.commit()
-message3 = "Now eldest new tastes plenty mother called misery get. Longer excuse for county nor except met its things. Narrow enough sex moment desire are. Hold who what come that seen read age its. Contained or estimable earnestly so perceived."
-comment3 = Overview(datetime = CreateRandomDate(), message = message3, author = "Sven")
-session.add(comment3)
-session.commit()
+# # Add a few comments to Overview
+# message1 = "Dependent sometimes additions recommend fat our. Direction has strangers now believing. Respect enjoyed gay far exposed parlors towards. Enjoyment use tolerably dependent listening men. No peculiar in handsome together unlocked do by. Article concern joy anxious did picture sir her. Although desirous not recurred disposed off shy you numerous securing."
+# comment1 = Overview(datetime = CreateRandomDate(), message = message1, author = "Sven")
+# session.add(comment1)
+# session.commit()
+# message2 = "Songs in oh other avoid it hours woman style. In myself family as if be agreed."
+# comment2 = Overview(datetime = CreateRandomDate(), message = message2, author = "Birger")
+# session.add(comment2)
+# session.commit()
+# message3 = "Now eldest new tastes plenty mother called misery get. Longer excuse for county nor except met its things. Narrow enough sex moment desire are. Hold who what come that seen read age its. Contained or estimable earnestly so perceived."
+# comment3 = Overview(datetime = CreateRandomDate(), message = message3, author = "Sven")
+# session.add(comment3)
+# session.commit()

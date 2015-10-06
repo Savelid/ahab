@@ -1,5 +1,5 @@
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -21,7 +21,7 @@ class System(Base):
 	__tablename__ = 'system'
 
 	serial_nr = Column(String(10), primary_key = True)
-	datetime = Column(DateTime)
+	datetime = Column(Date)
 
 	art_nr = Column(String(20))
 	client = Column(String(50))
@@ -39,15 +39,15 @@ class System(Base):
 	# Subunit without table
 	cooling_system = Column(String(10))
 
-class Overview(Base):
+# class Overview(Base):
 
-	__tablename__ = 'overview'
+# 	__tablename__ = 'overview'
 
-	id = Column(Integer, primary_key = True)
-	datetime = Column(DateTime)
+# 	id = Column(Integer, primary_key = True)
+# 	datetime = Column(DateTime)
 
-	message = Column(String)
-	author = Column(String(40))
+# 	message = Column(String)
+# 	author = Column(String(40))
 	
 class SystemStatus(Base):
 
