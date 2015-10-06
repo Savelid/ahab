@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}AHAB Systems{% endblock title %}</title>
+	<script src={{ url_for('static', filename='jQuery.js') }}></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='main.css') }}>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='responsive.css') }}>
+	<script src={{ url_for('static', filename='scripts.js') }}></script>
+	{% endblock head %}
+  </head>
+  <body>
+
+    <header class="header">
+      <div class="header__inner">
+        <img class="header__logo" src={{ url_for('static', filename='Leica_Geosystems.png') }} alt="Leica geosystems logo">
+        <h1 class="header__title">
+          {% block header_title %}Systems{% endblock header_title %}
+        </h1>
+        {% block menu_part1 %}
+        <a id="menu" class="header__menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+          </svg>
+        </a>
+        {% endblock menu_part1 %}
+      </div>
+    </header>
+
+    {% block menu_part2 %}
+    <nav id="drawer" class="nav">
+      <ul class="nav__list">
+        <li class="nav__item"><a href="/overview/">Overview</a></li>
+        <li class="nav__item"><a href="/systems/">Systems</a></li>
+        <li class="nav__item"><a href="/subsystems/">Subsystems</a></li>
+        <li class="nav__item"><a href="/log/">Log</a></li>
+      </ul>
+    </nav>
+    {% endblock menu_part2 %}
+
+    <main>
+      <section class="content">
+	    {% block content %}
+	    {% endblock content %}
+      </section>
+      <footer>
+      	{% block footer %}
+        <ul>
+          <li><a href="#">Overview</a></li>
+          <li><a href="#">Systems</a></li>
+          <li><a href="#">Subsystems</a></li>
+          <li><a href="#">Log</a></li>
+        </ul>
+        {% endblock footer %}
+      </footer>
+    </main>
+    <script>
+      /*
+       * Open the drawer when the menu ison is clicked.
+       */
+      var menu = document.querySelector('#menu');
+      var main = document.querySelector('main');
+      var drawer = document.querySelector('.nav');
+
+      menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+      main.addEventListener('click', function() {
+        drawer.classList.remove('open');
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %} {{ super() }} {% endblock title %}
+{% block head %} {{ super() }} {% endblock head %}
+{% block header_title %} Systems {% endblock header_title %}
+{% block menu_part1 %} {{ super() }} {% endblock menu_part1 %}
+{% block menu_part2 %} {{ super() }} {% endblock menu_part2 %}
+{% block footer %} {{ super() }} {% endblock footer %}
+
+{% block content %}
+
+<section class="all__systems">
+{% if systems.length > 0 %}
+  <table class="large__table">
+	<thead>
+	  <tr>
+	  	<th>Serial nr.</th>
+		<th colspan=2>Client</th>
+		<th colspan=2>Config.</th>
+		<th class="hide__550">Sensor unit</th>
+		<th class="hide__550">Control unit</th>
+		<th class="hide__550">Deep system</th>
+		<th class="hide__550">Control system</th>
+		<th class="hide__550">Topo</th>
+		<th class="hide__550">Shallow</th>
+		<th class="hide__550">Deep</th>
+		<th class="hide__550">SCU</th>
+		<th class="hide__550">PDU</th>
+		<th>Status</th>
+		<th colspan=3>Comments</th>
+	  </tr>
+    </thead>
+    <tbody>
+   	  {% for system in systems %}
+   	  <tr>
+   	  	<td colspan=2><a href="/systems/{{system.serial_nr}}/">{{system.serial_nr}}</a>
+   	  		<a href="/systems/{{system.serial_nr}}/edit/">
+   	  			<i class="fa fa-pencil-square-o"></i></a></td>
+		<td colspan=2>{{system.client}}
+			<a href="/systems/{{system.serial_nr}}/client/edit/">
+   	  			<i class="fa fa-pencil-square-o"></i></a></td>
+		<td>{{system.configuration}}
+			<a href="/systems/{{system.serial_nr}}/config/edit/">
+   	  			<i class="fa fa-pencil-square-o"></i></a></td>
+		<td class="hide__550">{{system.sensor_unit}}</td>
+		<td class="hide__550">{{system.control_unit}}</td>
+		<td class="hide__550">{{system.deep_system}}</td>
+		<td class="hide__550">in deep</td>
+		<td class="hide__550">Topo</td>
+		<td class="hide__550">Shallow</td>
+		<td class="hide__550">Deep</td>
+		<td class="hide__550">SCU</td>
+		<td class="hide__550">PDU</td>
+		<td>Status</td>
+		<td colspan=3>{{system.comment}}</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+{% endif %}
+</section>
+
+{% endblock content %}
