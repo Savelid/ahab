@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, System
+from database_setup import Base, System, Overview
 
 app = Flask(__name__)
 
@@ -17,49 +17,38 @@ session = DBSession()
 
 
 @app.route('/')
-def restaurantID():
-	restaurants = session.query(System).all()
-	output = ''
-	output += '<ul>'
-	for i in restaurants:
-		output += '<li>'
-		output += '%s' % i.serial_nr
-		output += '</li>'
-	output += '</ul>'
-	return output
-
-# @app.route('/overview/')
-# def Overview():
-# 	# messages = session.query(Overview).all()
-# 	return render_template('overview.html') #, messages=messages)
+@app.route('/overview/')
+def OverviewRoute():
+	messages = session.query(Overview).all()
+	return render_template('overview.html', messages=messages)
 
 @app.route('/systems/')
-def Systems():
+def SystemsRoute():
 	systems = session.query(System).all()
 	return render_template('systems.html', systems=systems)
 
 @app.route('/subsystems/')
-def Subsystems():
+def SubsystemsRoute():
 	return render_template('subsystems.html')
 
 @app.route('/log/')
-def Log():
+def LogRoute():
 	return render_template('log.html')
 
-# @app.route('/systems/<system_id>/')
-# def System(system_id):
-# 	system = session.query(System).filter_by(serial_nr = system_id).one()
-# 	return render_template('system.html', system=system)
+@app.route('/systems/<system_id>/')
+def SystemRoute(system_id):
+	system = session.query(System).filter_by(serial_nr = system_id).one()
+	return render_template('system.html', system=system)
 
-# @app.route('/systems/<system_id>/edit/')
-# def EditSystem(system_id):
-# 	system = session.query(System).filter_by(serial_nr = system_id).one()
-# 	return render_template('edit_system.html', system=system)
+@app.route('/systems/<system_id>/edit/')
+def EditSystemRoute(system_id):
+	system = session.query(System).filter_by(serial_nr = system_id).one()
+	return render_template('edit_system.html', system=system)
 
-# @app.route('/systems/<system_id>/delete/')
-# def Delete(system_id):
-# 	system = session.query(System).filter_by(serial_nr = system_id).one()
-# 	return render_template('delete.html', system=system)
+@app.route('/systems/<system_id>/delete/')
+def DeleteRoute(system_id):
+	system = session.query(System).filter_by(serial_nr = system_id).one()
+	return render_template('delete.html', system=system)
 
 ##### Server stuff #####
 if __name__ == '__main__' :

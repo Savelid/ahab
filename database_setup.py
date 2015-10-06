@@ -39,15 +39,15 @@ class System(Base):
 	# Subunit without table
 	cooling_system = Column(String(10))
 
-# class Overview(Base):
+class Overview(Base):
 
-# 	__tablename__ = 'overview'
+	__tablename__ = 'overview'
 
-# 	id = Column(Integer, primary_key = True)
-# 	datetime = Column(DateTime)
+	id = Column(Integer, primary_key = True)
+	datetime = Column(Date)
 
-# 	message = Column(String)
-# 	author = Column(String(40))
+	message = Column(String)
+	author = Column(String(40))
 	
 class SystemStatus(Base):
 

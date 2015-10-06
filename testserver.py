@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, System
+from database_setup import Base, Overview
 
 app = Flask(__name__)
 
@@ -17,12 +17,12 @@ session = DBSession()
 
 @app.route('/')
 def restaurantID():
-	restaurants = session.query(System).all()
+	restaurants = session.query(Overview).all()
 	output = ''
 	output += '<ul>'
 	for i in restaurants:
 		output += '<li>'
-		output += '%s' % i.serial_nr
+		output += '%s' % i.author
 		output += '</li>'
 	output += '</ul>'
 	return output

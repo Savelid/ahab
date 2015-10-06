@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 {% block title %} {{ super() }} {% endblock title %}
 {% block head %} {{ super() }} {% endblock head %}
-{% block header_title %} Overview {% endblock header_title %}
+{% block header_title %}
+{{system.serial_nr}}
+<span class="hide__this__header"> {{system.configuration}}</span>
+{% endblock header_title %}
 {% block menu_part1 %} {{ super() }} {% endblock menu_part1 %}
 {% block menu_part2 %} {{ super() }} {% endblock menu_part2 %}
 {% block footer %} {{ super() }} {% endblock footer %}
 
 {% block content %}
-
-<dl>
-{% for message in messages %}
-<dt>{{ message.message }}</dt>
-<dd>{{ message.author }}</dd>
-{% endfor %}
-</dl>
 
 {% endblock content %}
