@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, System, Overview
+from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ def OverviewRoute():
 
 @app.route('/systems/')
 def SystemsRoute():
-	systems = session.query(System).all()
+	systems = session.query(System).join(SystemStatus).all()
 	return render_template('systems.html', systems=systems)
 
 @app.route('/subsystems/')
@@ -34,6 +34,10 @@ def SubsystemsRoute():
 @app.route('/log/')
 def LogRoute():
 	return render_template('log.html')
+
+@app.route('/systems/new')
+def NewSystemRoute():
+	return render_template('new_system.html')
 
 @app.route('/systems/<system_id>/')
 def SystemRoute(system_id):

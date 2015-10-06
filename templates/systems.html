@@ -8,6 +8,15 @@
 
 {% block content %}
 
+<section class="nav__sub">
+  <ul class="nav__sub__list">
+	<li class="nav__sub__item">
+	  <a href="/systems/new/"><i class="fa fa-plus-square"></i> New system</a></li>
+	<li class="nav__sub__item" id="show__all">
+	  <a href="/systems/full"><i class="fa fa-expand"></i> Full table</a></li>
+  </ul>
+</section>
+
 
 <section class="all__systems">
   <table class="large__table">
@@ -43,14 +52,19 @@
    	  			<i class="fa fa-pencil-square-o"></i></a></td>
 		<td class="hide__550">{{system.sensor_unit}}</td>
 		<td class="hide__550">{{system.control_unit}}</td>
-		<td class="hide__550">{{system.deep_system}}</td>
-		<td class="hide__550">in deep</td>
-		<td class="hide__550">Topo</td>
-		<td class="hide__550">Shallow</td>
-		<td class="hide__550">Deep</td>
-		<td class="hide__550">SCU</td>
-		<td class="hide__550">PDU</td>
-		<td>Status</td>
+		<td class="hide__550">{{system.deep_system_id}}</td>
+		<td class="hide__550">{{system.deep_system.control_system}}</td>
+		<td class="hide__550">{{system.sensor_unit.topo_sensor_id}}</td>
+		<td class="hide__550">{{system.sensor_unit.shallow_sensor_id}}</td>
+		<td class="hide__550">{{system.deep_system.deep_sensor_id}}</td>
+		<td class="hide__550">{{system.control_unit.scu_id}}</td>
+		<td class="hide__550">{{system.control_unit.pdu}}</td>
+		<td>{% if 	system.system_status.potta_heat and
+					system.system_status.shallow_heat 
+					%}Ready
+			{% else %}Not Ready
+			{% endif %}
+		</td>
 		<td colspan=3>{{system.comment}}</td>
 	  </tr>
 	  {% endfor %}
