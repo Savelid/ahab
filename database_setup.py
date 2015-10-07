@@ -16,29 +16,6 @@ Base = declarative_base()
 # primary_key = True - identifier
 # ForeignKey('some_table.id') - referense a row in different table with relation to this table
 
-class System(Base):
-
-	__tablename__ = 'system'
-
-	serial_nr = Column(String(10), primary_key = True)
-	datetime = Column(Date)
-
-	art_nr = Column(String(20))
-	client = Column(String(50))
-	configuration = Column(String(50))
-	comment = Column(String)
-	system_status_id = Column(Integer, ForeignKey('system_status.id'))
-	system_status = relationship("SystemStatus")  #, backref=backref("system", uselist=False))
-	# Subunits with tables
-	sensor_unit_id = Column(String(10), ForeignKey('sensor_unit.serial_nr'))
-	sensor_unit = relationship("SensorUnit")  #, backref=backref("system", uselist=False))
-	control_unit_id = Column(String(10), ForeignKey('control_unit.serial_nr'))
-	control_unit = relationship("ControlUnit")  #, backref=backref("system", uselist=False))
-	deep_system_id = Column(String(10), ForeignKey('deep_system.serial_nr'))
-	deep_system = relationship("DeepSystem")  #, backref=backref("system", uselist=False))
-	# Subunit without table
-	cooling_system = Column(String(10))
-
 class Overview(Base):
 
 	__tablename__ = 'overview'
@@ -48,12 +25,37 @@ class Overview(Base):
 
 	message = Column(String)
 	author = Column(String(40))
+
+class System(Base):
+
+	__tablename__ = 'system'
+
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+	datetime = Column(Date)
+
+	art_nr = Column(String(20))
+	client = Column(String(50))
+	configuration = Column(String(50))
+	comment = Column(String)
+	system_status_id = Column(Integer, ForeignKey('system_status.id'))
+	system_status = relationship("SystemStatus", backref="system")
+	# Subunits with tables
+	sensor_unit_id = Column(String(10), ForeignKey('sensor_unit.serial_nr'))
+	sensor_unit = relationship("SensorUnit")
+	control_unit_id = Column(String(10), ForeignKey('control_unit.serial_nr'))
+	control_unit = relationship("ControlUnit")
+	deep_system_id = Column(String(10), ForeignKey('deep_system.serial_nr'))
+	deep_system = relationship("DeepSystem")
+	# Subunit without table
+	cooling_system = Column(String(10))
 	
 class SystemStatus(Base):
 
 	__tablename__ = 'system_status'
 
 	id = Column(Integer, primary_key = True)
+	#system_id = Column(String(10), ForeignKey('system.serial_nr'))
 
 	potta_heat = Column(Boolean)
 	shallow_heat = Column(Boolean)
@@ -63,7 +65,9 @@ class SensorUnit(Base):
 
 	__tablename__ = 'sensor_unit'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+	#system_id = Column(String(10), ForeignKey('system.serial_nr'))
 
 	imu = Column(String(10))
 	# With tables
@@ -77,7 +81,9 @@ class ControlUnit(Base):
 
 	__tablename__ = 'control_unit'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+	#system_id = Column(String(10), ForeignKey('system.serial_nr'))
 
 	battery = Column(String(10))
 	cc32 = Column(String(10))
@@ -90,7 +96,9 @@ class DeepSystem(Base):
 
 	__tablename__ = 'deep_system'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+	#system_id = Column(String(10), ForeignKey('system.serial_nr'))
 
 	control_system = Column(String(10))
 	imu = Column(String(10))
@@ -103,7 +111,8 @@ class SCU(Base):
 
 	__tablename__ = 'scu'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
 
 	# configuration ??
 	digitaizer1 = Column(String(10))
@@ -117,7 +126,8 @@ class TopoSensor(Base):
 
 	__tablename__ = 'topo_sensor'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
 
 	cat = Column(String(10))
 	fpga_id = Column(String(10))
@@ -135,7 +145,8 @@ class ShallowSensor(Base):
 
 	__tablename__ = 'shallow_sensor'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
 
 	cat = Column(String(10))
 	fpga_id = Column(String(10))
@@ -153,14 +164,15 @@ class DeepSensor(Base):
 
 	__tablename__ = 'deep_sensor'
 
-	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
 
 	cat = Column(String(10))
 	fpga_id = Column(String(10))
 	laser = Column(String(10))
-	hv_card_1 = Column(String(10)) # TODO Add relationship??
-	receiver_unit_1 = Column(String(10))
-	receiver_chip_1 = Column(String(10))
+	hv_card = Column(String(10)) # TODO Add relationship??
+	receiver_unit = Column(String(10))
+	receiver_chip = Column(String(10))
 	hv_card_2 = Column(String(10)) # TODO Add relationship??
 	receiver_unit_2 = Column(String(10))
 	receiver_chip_2 = Column(String(10))

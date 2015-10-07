@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} {{ super() }} {% endblock title %}
+{% block head %} {{ super() }} {% endblock head %}
+{% block header_title %} Parts {% endblock header_title %}
+{% block menu_part1 %} {{ super() }} {% endblock menu_part1 %}
+{% block menu_part2 %} {{ super() }} {% endblock menu_part2 %}
+{% block footer %} {{ super() }} {% endblock footer %}
+
+{% block content %}
+<section class="nav__sub">
+  <ul class="nav__sub__list">
+	<li class="nav__sub__item">
+	  <a href="/parts/unit/new"><i class="fa fa-plus-square"></i> New unit</a></li>
+	<li class="nav__sub__item">
+	  <a href="/parts/sensor/new"><i class="fa fa-plus-square"></i> New sensor</a></li>
+  </ul>
+</section>
+{% endblock content %}

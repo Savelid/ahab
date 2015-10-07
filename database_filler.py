@@ -30,9 +30,14 @@ def CreateRandomSN():
 
 ##
 # Add a few systems
-for i in range(0,15):
-	system = System(serial_nr = CreateRandomSN(), datetime = CreateRandomDate(), art_nr = CreateRandomSN(), client = client_names[randint(0,7)], configuration = config_names[randint(0,2)], system_status_id = i)
-	system_status = SystemStatus(id = i, potta_heat = True, shallow_heat = False)
+for i in range(1200,1210):
+	ranprocent = randint(0,100)
+	shallowValue = True
+	if ranprocent < 20:
+		shallowValue = False
+
+	system = System(serial_nr = i, datetime = CreateRandomDate(), art_nr = CreateRandomSN(), client = client_names[randint(0,7)], configuration = config_names[randint(0,2)], system_status_id = i)
+	system_status = SystemStatus(id = i, potta_heat = True, shallow_heat = shallowValue)
 	session.add(system)
 	session.add(system_status)
 	session.commit()
