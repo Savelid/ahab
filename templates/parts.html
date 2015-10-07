@@ -10,9 +10,13 @@
 <section class="nav__sub">
   <ul class="nav__sub__list">
 	<li class="nav__sub__item">
-	  <a href="/parts/unit/new"><i class="fa fa-plus-square"></i> New unit</a></li>
+	  <a href="/parts/sensor_unit/new"><i class="fa fa-plus-square"></i> New SensorUnit</a></li>
 	<li class="nav__sub__item">
-	  <a href="/parts/sensor/new"><i class="fa fa-plus-square"></i> New sensor</a></li>
+	  <a href="/parts/sensor/new"><i class="fa fa-plus-square"></i> New Sensor</a></li>
   </ul>
 </section>
+
+{% for sensorUnit in sensorUnits %}
+{{ sensorUnit.serial_nr }}
+{% endfor %}
 {% endblock content %}

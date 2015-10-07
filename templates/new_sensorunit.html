@@ -7,5 +7,15 @@
 {% block footer %} {{ super() }} {% endblock footer %}
 
 {% block content %}
-form
+{% from "_formhelpers.html" import render_field %}
+<form method=post action="/parts/sensor_unit/new/">
+  <dl>
+    {{ render_field(form.serial_nr) }}
+    {{ render_field(form.imu) }}
+    {{ render_field(form.leica_cam) }}
+    {{ render_field(form.topo_sensor_id) }}
+    {{ render_field(form.shallow_sensor_id) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
 {% endblock content %}

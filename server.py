@@ -1,4 +1,12 @@
 from flask import Flask , render_template , request , redirect , url_for, flash
+from wtforms import Form, BooleanField, TextField, StringField, PasswordField, validators
+
+from flask_wtf import Form
+from wtforms import StringField
+from wtforms.validators import DataRequired
+
+class MyForm(Form):
+    name = StringField('name', validators=[DataRequired()])
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine
@@ -29,7 +37,8 @@ def SystemsRoute():
 
 @app.route('/parts/')
 def partsRoute():
-	return render_template('parts.html')
+	sensorUnits = session.query(SensorUnit).all()
+	return render_template('parts.html', sensorUnits=sensorUnits)
 
 @app.route('/log/')
 def LogRoute():
@@ -138,9 +147,61 @@ def DeleteSCURoute(system_id):
 
 # Units pages
 
-@app.route('/parts/unit/new/', methods=['GET', 'POST'])
-def NewUnitRoute():
-	return render_template('new_unit.html')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = SensorUnit(form.serial_nr.data)
+        session.add(user)
+        session.commit()
+        flash('Thanks for registering')
+        return redirect(url_for('partsRoute'))
+    return render_template('register.html', form=form)
+
+@app.route('/parts/sensor_unit/new/', methods=['GET', 'POST'])
+def test123():
+	form = SensorUnitForm(request.form)
+	if request.method == 'POST':
+		newItem = SensorUnit(serial_nr=form.serial_nr.data, imu=form.imu.data, leica_cam=form.leica_cam.data, topo_sensor_id=form.topo_sensor_id.data, shallow_sensor_id=form.shallow_sensor_id.data)
+		session.add(newItem)
+		session.commit()
+		flash("new SensorUnit created!")
+		return redirect(url_for('partsRoute'))
+
+	return render_template('new_sensorunit.html', form=form)
+
+@app.route('/parts/sensor_unit/new/old', methods=['GET', 'POST'])
+def NewSensorUnitRoute():
+	form = SensorUnitForm(request.form)
+	if form.validate_on_submit():
+		newItem = SensorUnit(form.serial_nr.data, form.imu.data, form.leica_cam.data, form.topo_sensor_id.data, form.shallow_sensor_id.data)
+		session.add(newItem)
+		session.commit()
+		flash("new SensorUnit created!")
+		return redirect(url_for('partsRoute'))
+
+	return render_template('new_sensorunit.html', form=form)
+
+### Forms ###
+
+class SensorUnitForm(Form):
+    serial_nr   	= StringField('Serial Number', [validators.Length(min=4, max=4)])
+    imu        		= StringField('IMU', [validators.Length(min=4, max=4)])
+    leica_cam 		= StringField('Leica camera', [validators.Length(min=4, max=10)])
+    topo_sensor_id		= StringField('Topo Sensor', [validators.Length(min=4, max=4)])
+    shallow_sensor_id	= StringField('Shallow Sensor', [validators.Length(min=4, max=4)])
+
+
+class RegistrationForm(Form):
+    serial_nr = TextField('Serial number', [validators.Length(min=4, max=4)])
+    email = TextField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('New Password', [
+        validators.Required(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
+    accept_tos = BooleanField('I accept the TOS', [validators.Required()])
+
 
 ##### Server stuff #####
 if __name__ == '__main__' :
