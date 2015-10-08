@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from application.database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
+from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
 
 # Create session and connect to DB
 engine = create_engine('sqlite:///ahab.db')
