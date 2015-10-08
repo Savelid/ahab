@@ -40,7 +40,8 @@ class DeepSystemForm(Form):
     imu                 = StringField('IMU', [validators.Length(min=4, max=4)])
     pro_pack            = StringField('Pro Pack', [validators.Length(min=4, max=4)])
     deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
-    deep_sensor_id      = SelectField(u'Deep Sensor', choices=[(a.serial_nr, a.serial_nr) for a in deep_sensor_list])
+    deep_sensor_fake    = SelectField(u'Deep Sensor Test', choices=[(a.serial_nr, a.serial_nr) for a in deep_sensor_list])
+    deep_sensor_id      = StringField('Deep Sensor', [validators.Length(min=4, max=4)])
 
 class SensorForm(Form):
     sensor_type =         SelectField(u'Sensor Type', choices=[('topo', 'Topo Sensor'), ('shallow', 'Shallow Sensor'), ('deep', 'Deep Sensor')])
@@ -59,3 +60,17 @@ class SensorForm(Form):
     dps_value_pulse_width_t0 =   StringField('Pulse width t0', [validators.NumberRange()])
     dps_value_pulse_width_rec =  StringField('Pulse width rec', [validators.NumberRange()])
     status =                     TextField('Status', [validators.Optional()])
+
+class SystemForm(Form):
+    serial_nr           = StringField('Serial Number', [validators.Length(min=4, max=4)])
+    art_nr              = StringField('Art Nr', [validators.Length(min=4, max=20)])
+    client              = StringField('Client', [validators.Optional(), validators.Length(max=50)])
+    configuration       = SelectField(u'Configuration', choices=[('HawkEyeIII', 'HawkEyeIII'), ('DualDragon', 'DualDragon'), ('Chiroptera', 'Chiroptera')])
+    sensor_unit_id      = StringField('Sensor Unit', [validators.Length(min=4, max=4)])
+    control_unit_id     = StringField('Control Unit', [validators.Length(min=4, max=4)])
+    deep_system_id      = StringField('Deep System', [validators.Length(min=4, max=4)])
+    cooling_system      = StringField('Cooling System', [validators.Length(min=4, max=4)])
+    comment             = TextField('Comment', [validators.Optional()])
+
+    potta_heat          = BooleanField('Potta Heat')
+    shallow_heat        = BooleanField('Shallow Heat')

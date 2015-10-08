@@ -1,6 +1,7 @@
 from application import app
 from application import forms
 from flask import render_template , request , redirect , url_for, flash
+import datetime
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine
@@ -40,9 +41,30 @@ def partsRoute():
 def LogRoute():
 	return render_template('log.html')
 
-@app.route('/systems/new')
+@app.route('/systems/new/', methods=['GET', 'POST'])
 def NewSystemRoute():
-	return render_template('new_system.html')
+	form = forms.SystemForm(request.form)
+	if request.method == 'POST' and form.validate():
+		newStatus = SystemStatus(	potta_heat=form.potta_heat.data,
+									shallow_heat=form.shallow_heat.data)
+		session.add(newStatus)
+		session.commit()
+		newItem = System(	serial_nr=form.serial_nr.data,
+							datetime=datetime.date.today(),
+							art_nr=form.art_nr.data,
+							client=form.client.data,
+							configuration=form.configuration.data,
+							comment=form.comment.data,
+							system_status_id=newStatus.id,
+							sensor_unit_id=form.sensor_unit_id.data,
+							control_unit_id=form.control_unit_id.data,
+							deep_system_id=form.deep_system_id.data,
+							cooling_system=form.cooling_system.data)
+		session.add(newItem)
+		session.commit()
+		flash("new System created!")
+		return redirect(url_for('SystemsRoute'))
+	return render_template('new_system.html', form=form)
 
 @app.route('/systems/<system_id>/')
 def SystemRoute(system_id):
@@ -77,6 +99,7 @@ def DeletePartRoute(system_id):
 
 @app.route('/parts/sensor/new/', methods=['GET', 'POST'])
 def NewSensorRoute():
+	deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
 	form = forms.SensorForm(request.form)
 	if request.method == 'POST' and form.validate():
 		newItem = Sensor(	serial_nr=form.serial_nr.data,
@@ -100,7 +123,7 @@ def NewSensorRoute():
 		flash("new Sensor created!")
 		return redirect(url_for('partsRoute'))
 
-	return render_template('new_sensor.html', form=form)
+	return render_template('new_sensor.html', form=form, deep_sensor_list=deep_sensor_list)
 
 @app.route('/parts/sensor/<system_id>/')
 def SensorRoute(system_id):

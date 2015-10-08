@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %} {{ super() }} {% endblock title %}
 {% block head %} {{ super() }} {% endblock head %}
-{% block header_title %} New Deep System {% endblock header_title %}
+{% block header_title %} New System {% endblock header_title %}
 {% block menu_part1 %} {{ super() }} {% endblock menu_part1 %}
 {% block menu_part2 %} {{ super() }} {% endblock menu_part2 %}
 {% block footer %} {{ super() }} {% endblock footer %}
@@ -9,15 +9,21 @@
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
 <section class="form">
-  <form method=post action="/parts/deepSystem/new/">
+  <form method=post action="/systems/new/">
   {{ form.csrf_token }}
     <dl>
       {{ render_field(form.serial_nr) }}
-      {{ render_field(form.control_system) }}
-      {{ render_field(form.imu) }}
-      {{ render_field(form.pro_pack) }}
-      {{ render_field(form.deep_sensor_id) }}
-      {{ render_field(form.deep_sensor_fake) }}
+      {{ render_field(form.art_nr) }}
+      {{ render_field(form.client) }}
+      {{ render_field(form.configuration) }}
+      {{ render_field(form.sensor_unit_id) }}
+      {{ render_field(form.control_unit_id) }}
+      {{ render_field(form.deep_system_id) }}
+      {{ render_field(form.cooling_system) }}
+      {{ render_field(form.comment) }}
+
+      {{ render_field(form.potta_heat) }}
+      {{ render_field(form.shallow_heat) }}
   </dl>
   <p><input type=submit value=Save /></p>
   </form>
