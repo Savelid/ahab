@@ -5,6 +5,19 @@ from flask_wtf import Form
 from wtforms import StringField
 from wtforms.validators import Length, Required
 
+# Import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+# Import classes for database tables
+from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit, Sensor, SCU
+
+# Create session and connect to DB
+engine = create_engine('sqlite:///ahab.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind = engine)
+session = DBSession()
+
 ### Forms ###
 
 class SensorUnitForm(Form):
@@ -26,7 +39,8 @@ class DeepSystemForm(Form):
     control_system      = StringField('Control System', [validators.Length(min=4, max=4)])
     imu                 = StringField('IMU', [validators.Length(min=4, max=4)])
     pro_pack            = StringField('Pro Pack', [validators.Length(min=4, max=4)])
-    deep_sensor_id      = StringField('Deep Sensor', [validators.Length(min=4, max=4)])
+    deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
+    deep_sensor_id      = SelectField(u'Deep Sensor', choices=[(a.serial_nr, a.serial_nr) for a in deep_sensor_list])
 
 class SensorForm(Form):
     sensor_type =         SelectField(u'Sensor Type', choices=[('topo', 'Topo Sensor'), ('shallow', 'Shallow Sensor'), ('deep', 'Deep Sensor')])
@@ -37,9 +51,9 @@ class SensorForm(Form):
     hv_card =                    StringField('HV card', [validators.Length(min=4, max=4)])
     receiver_unit =              StringField('Receiver Unit', [validators.Length(min=4, max=4)])
     receiver_chip =              StringField('Receiver Chip', [validators.Length(min=8, max=8)])
-    hv_card_2 =                  StringField('HV card 2', [validators.Length(min=4, max=4)])
-    receiver_unit_2 =            StringField('Receiver Unit 2', [validators.Length(min=4, max=4)])
-    receiver_chip_2 =            StringField('Receiver Chip 2', [validators.Length(min=4, max=4)])
+    hv_card_2 =                  StringField('HV card 2', [validators.optional(), validators.Length(min=4, max=4)])
+    receiver_unit_2 =            StringField('Receiver Unit 2', [validators.optional(), validators.Length(min=4, max=4)])
+    receiver_chip_2 =            StringField('Receiver Chip 2', [validators.optional(), validators.Length(min=8, max=8)])
     dps_value_input_offset_t0 =  StringField('Input offset t0', [validators.NumberRange()])
     dps_value_input_offset_rec = StringField('Input offset rec', [validators.NumberRange()])
     dps_value_pulse_width_t0 =   StringField('Pulse width t0', [validators.NumberRange()])

@@ -75,51 +75,6 @@ def DeletePartRoute(system_id):
 
 # Sensor pages
 
-# @app.route('/parts/topo/<system_id>/')
-# def TopoRoute(system_id):
-# 	sensor = session.query(TopoSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('sensor.html', sensor=sensor, sensor_type='topo')
-
-# @app.route('/parts/topo/<system_id>/edit')
-# def EditTopoRoute(system_id):
-# 	sensor = session.query(TopoSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('edit_sensor.html', sensor=sensor, sensor_type='topo')
-
-# @app.route('/parts/topo/<system_id>/delete')
-# def DeleteTopoRoute(system_id):
-# 	sensor = session.query(TopoSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('delete.html', item=sensor)
-
-# @app.route('/parts/shallow/<system_id>/')
-# def ShallowRoute(system_id):
-# 	sensor = session.query(ShallowSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('sensor.html', sensor=sensor, sensor_type='shallow')
-
-# @app.route('/parts/shallow/<system_id>/edit')
-# def EditShallowRoute(system_id):
-# 	sensor = session.query(ShallowSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('edit_sensor.html', sensor=sensor, sensor_type='shallow')
-
-# @app.route('/parts/shallow/<system_id>/delete')
-# def DeleteShallowRoute(system_id):
-# 	sensor = session.query(ShallowSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('delete.html', item=sensor)
-
-# @app.route('/parts/deep/<system_id>/')
-# def DeepRoute(system_id):
-# 	sensor = session.query(DeepSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('sensor.html', sensor=sensor, sensor_type='deep')
-
-# @app.route('/parts/deep/<system_id>/edit')
-# def EditDeepRoute(system_id):
-# 	sensor = session.query(DeepSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('edit_sensor.html', sensor=sensor, sensor_type='deep')
-
-# @app.route('/parts/deep/<system_id>/delete')
-# def DeleteDeepRoute(system_id):
-# 	sensor = session.query(DeepSensor).filter_by(serial_nr = system_id).one()
-# 	return render_template('delete.html', item=sensor)
-
 @app.route('/parts/sensor/new/', methods=['GET', 'POST'])
 def NewSensorRoute():
 	form = forms.SensorForm(request.form)
