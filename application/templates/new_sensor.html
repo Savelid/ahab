@@ -7,5 +7,32 @@
 {% block footer %} {{ super() }} {% endblock footer %}
 
 {% block content %}
-form
+{% from "_formhelpers.html" import render_field %}
+<section class="form">
+  <form method=post action="/parts/sensor/new/">
+  {{ form.csrf_token }}
+    <dl>
+      {{ render_field(form.sensor_type) }}
+      {{ render_field(form.serial_nr) }}
+      {{ render_field(form.cat) }}
+      {{ render_field(form.fpga_id) }}
+      {{ render_field(form.laser) }}
+      {{ render_field(form.hv_card) }}
+      {{ render_field(form.receiver_unit) }}
+      {{ render_field(form.receiver_chip) }}
+      {% if sensor_type == 'deep' %}
+      {% endif %}
+        {{ render_field(form.hv_card_2) }}
+        {{ render_field(form.receiver_unit_2) }}
+        {{ render_field(form.receiver_chip_2) }}
+      
+      {{ render_field(form.dps_value_input_offset_t0) }}
+      {{ render_field(form.dps_value_input_offset_rec) }}
+      {{ render_field(form.dps_value_pulse_width_t0) }}
+      {{ render_field(form.dps_value_pulse_width_rec) }}
+      {{ render_field(form.status) }}
+  </dl>
+  <p><input type=submit value=Save /></p>
+  </form>
+ </section>
 {% endblock content %}

@@ -124,4 +124,27 @@
   </table>
 </section>
 
+<section class="parts__section">
+  <h3>Sensors</h3>
+  <table class="parts__table table">
+	<thead>
+	  <tr>
+	  	<th>Serial nr.</th>
+		<th>Type</th>
+	  </tr>
+    </thead>
+    <tbody>
+   	  {% for unit in sensors %}
+   	  <tr>
+   	  	<td><a href="/parts/sensor/{{unit.serial_nr}}">{{unit.serial_nr}}</a>
+   	  		<a href="#"><i class="fa fa-trash-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.sensor_type}}
+   	  	</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+</section>
+
 {% endblock content %}

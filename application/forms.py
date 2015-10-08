@@ -1,5 +1,5 @@
 from application import app
-from wtforms import Form, BooleanField, TextField, StringField, PasswordField, validators
+from wtforms import Form, BooleanField, TextField, StringField, PasswordField, SelectField, validators
 
 from flask_wtf import Form
 from wtforms import StringField
@@ -28,3 +28,20 @@ class DeepSystemForm(Form):
     pro_pack            = StringField('Pro Pack', [validators.Length(min=4, max=4)])
     deep_sensor_id      = StringField('Deep Sensor', [validators.Length(min=4, max=4)])
 
+class SensorForm(Form):
+    sensor_type =         SelectField(u'Sensor Type', choices=[('topo', 'Topo Sensor'), ('shallow', 'Shallow Sensor'), ('deep', 'Deep Sensor')])
+    serial_nr =                  StringField('Serial Number', [validators.Length(min=4, max=4)])
+    cat =                        StringField('CAT', [validators.Length(min=4, max=4)])
+    fpga_id =                    StringField('FGPA', [validators.Length(min=10, max=10)])
+    laser =                      StringField('Laser', [validators.Length(min=8, max=8)])
+    hv_card =                    StringField('HV card', [validators.Length(min=4, max=4)])
+    receiver_unit =              StringField('Receiver Unit', [validators.Length(min=4, max=4)])
+    receiver_chip =              StringField('Receiver Chip', [validators.Length(min=8, max=8)])
+    hv_card_2 =                  StringField('HV card 2', [validators.Length(min=4, max=4)])
+    receiver_unit_2 =            StringField('Receiver Unit 2', [validators.Length(min=4, max=4)])
+    receiver_chip_2 =            StringField('Receiver Chip 2', [validators.Length(min=4, max=4)])
+    dps_value_input_offset_t0 =  StringField('Input offset t0', [validators.NumberRange()])
+    dps_value_input_offset_rec = StringField('Input offset rec', [validators.NumberRange()])
+    dps_value_pulse_width_t0 =   StringField('Pulse width t0', [validators.NumberRange()])
+    dps_value_pulse_width_rec =  StringField('Pulse width rec', [validators.NumberRange()])
+    status =                     TextField('Status', [validators.Optional()])

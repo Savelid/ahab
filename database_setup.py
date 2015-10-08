@@ -169,13 +169,36 @@ class DeepSensor(Base):
 
 	cat = Column(String(10))
 	fpga_id = Column(String(10))
-	laser = Column(String(10))
-	hv_card = Column(String(10)) # TODO Add relationship??
+	laser = Column(String(10)) # TODO Add relationship
+	hv_card = Column(String(10)) # TODO Add relationship
 	receiver_unit = Column(String(10))
-	receiver_chip = Column(String(10))
-	hv_card_2 = Column(String(10)) # TODO Add relationship??
+	receiver_chip = Column(String(10)) # TODO Add relationship
+	hv_card_2 = Column(String(10)) # TODO Add relationship
 	receiver_unit_2 = Column(String(10))
-	receiver_chip_2 = Column(String(10))
+	receiver_chip_2 = Column(String(10)) # TODO Add relationship
+	dps_value_input_offset_t0 = Column(Integer)
+	dps_value_input_offset_rec = Column(Integer)
+	dps_value_pulse_width_t0 = Column(Integer)
+	dps_value_pulse_width_rec = Column(Integer)
+	status = Column(String(30))
+
+class Sensor(Base):
+
+	__tablename__ = 'sensor'
+
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+	sensor_type = Column(String(10))
+
+	cat = Column(String(10))
+	fpga_id = Column(String(10))
+	laser = Column(String(10)) # TODO Add relationship
+	hv_card = Column(String(10)) # TODO Add relationship
+	receiver_unit = Column(String(10))
+	receiver_chip = Column(String(10)) # TODO Add relationship
+	hv_card_2 = Column(String(10)) # TODO Add relationship
+	receiver_unit_2 = Column(String(10))
+	receiver_chip_2 = Column(String(10)) # TODO Add relationship
 	dps_value_input_offset_t0 = Column(Integer)
 	dps_value_input_offset_rec = Column(Integer)
 	dps_value_pulse_width_t0 = Column(Integer)
