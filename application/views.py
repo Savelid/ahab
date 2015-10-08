@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
+from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit, TopoSensor, ShallowSensor, DeepSensor, SCU
 
 # Create session and connect to DB
 engine = create_engine('sqlite:///ahab.db')
@@ -31,7 +31,9 @@ def SystemsRoute():
 @app.route('/parts/')
 def partsRoute():
 	sensorUnits = session.query(SensorUnit).all()
-	return render_template('parts.html', sensorUnits=sensorUnits)
+	controlUnits = session.query(ControlUnit).all()
+	deepSystems = session.query(DeepSystem).all()
+	return render_template('parts.html', sensorUnits=sensorUnits, controlUnits=controlUnits, deepSystems=deepSystems)
 
 @app.route('/log/')
 def LogRoute():
@@ -140,7 +142,7 @@ def DeleteSCURoute(system_id):
 
 # Units pages
 
-@app.route('/parts/sensor_unit/new/', methods=['GET', 'POST'])
+@app.route('/parts/sensorUnit/new/', methods=['GET', 'POST'])
 def NewSensorUnitRoute():
 	form = forms.SensorUnitForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -151,3 +153,27 @@ def NewSensorUnitRoute():
 		return redirect(url_for('partsRoute'))
 
 	return render_template('new_sensorunit.html', form=form)
+
+@app.route('/parts/controlUnit/new/', methods=['GET', 'POST'])
+def NewControlUnitRoute():
+	form = forms.ControlUnitForm(request.form)
+	if request.method == 'POST' and form.validate():
+		newItem = ControlUnit(serial_nr=form.serial_nr.data, battery=form.battery.data, cc32=form.cc32.data, pdu=form.pdu.data, scu_id=form.scu_id.data)
+		session.add(newItem)
+		session.commit()
+		flash("new ControlUnit created!")
+		return redirect(url_for('partsRoute'))
+
+	return render_template('new_controlunit.html', form=form)
+
+@app.route('/parts/deepSystem/new/', methods=['GET', 'POST'])
+def NewDeepSystemRoute():
+	form = forms.DeepSystemForm(request.form)
+	if request.method == 'POST' and form.validate():
+		newItem = DeepSystem(serial_nr=form.serial_nr.data, control_system=form.control_system.data, imu=form.imu.data, pro_pack=form.pro_pack.data, deep_sensor_id=form.deep_sensor_id.data)
+		session.add(newItem)
+		session.commit()
+		flash("new DeepSystem created!")
+		return redirect(url_for('partsRoute'))
+
+	return render_template('new_deepsystem.html', form=form)

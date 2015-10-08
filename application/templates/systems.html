@@ -54,10 +54,10 @@
 		<td class="hide__550">{{system.control_unit_id}}</td>
 		<td class="hide__550">{{system.deep_system_id}}</td>
 		<td class="hide__550">{{system.deep_system.control_system}}</td>
-		<td class="hide__550">{{system.sensor_unit.topo_sensor_id}}</td>
-		<td class="hide__550">{{system.sensor_unit.shallow_sensor_id}}</td>
-		<td class="hide__550">{{system.deep_system.deep_sensor_id}}</td>
-		<td class="hide__550">{{system.control_unit.scu_id}}</td>
+		<td class="hide__550"><a href="/parts/topo/{{system.sensor_unit.topo_sensor_id}}/">{{system.sensor_unit.topo_sensor_id}}</a></td>
+		<td class="hide__550"><a href="/parts/shallow/{{system.sensor_unit.shallow_sensor_id}}/">{{system.sensor_unit.shallow_sensor_id}}</a></td>
+		<td class="hide__550"><a href="/parts/deep/{{system.deep_system.deep_sensor_id}}/">{{system.deep_system.deep_sensor_id}}</a></td>
+		<td class="hide__550"><a href="/parts/scu/{{system.control_unit.scu_id}}/">{{system.control_unit.scu_id}}</a></td>
 		<td class="hide__550">{{system.control_unit.pdu}}</td>
 		<td>{% if 	system.system_status.potta_heat and
 					system.system_status.shallow_heat 

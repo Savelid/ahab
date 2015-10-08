@@ -44,6 +44,15 @@ ul {
   text-decoration: none;
 }
 
+/*
+ *
+ * Section
+ *
+ */
+
+ .parts__section {
+  width: 100%;
+}
 
 /*
  *
@@ -294,7 +303,8 @@ a, i{
 }
 
 .sensor__table,
-.large__table {
+.large__table,
+.table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -302,7 +312,9 @@ a, i{
 .sensor__table th,
 .sensor__table td,
 .large__table th,
-.large__table td {
+.large__table td,
+.table th,
+.table td {
   padding: 1em; 
 }
 
@@ -311,7 +323,8 @@ a, i{
 }
 
 .sensor__table th,
-.large__table th {
+.large__table th,
+.table th {
   color: #fff;
   font-weight: 300;
   background-color: #78909C;
@@ -322,13 +335,19 @@ a, i{
   text-align: left;
 }
 
+.parts__table td {
+  text-align: center;
+}
+
 .sensor__table tr:nth-child(odd) td,
-.large__table tr:nth-child(odd) td {
+.large__table tr:nth-child(odd) td,
+.table tr:nth-child(odd) td {
   background-color: #fff;
 }
 
 .sensor__table tr:nth-child(even) td,
-.large__table tr:nth-child(even) td {
+.large__table tr:nth-child(even) td,
+.table tr:nth-child(even) td {
   background-color: #eceff1;
 }
 

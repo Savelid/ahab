@@ -9,14 +9,119 @@
 {% block content %}
 <section class="nav__sub">
   <ul class="nav__sub__list">
-	<li class="nav__sub__item">
-	  <a href="/parts/sensor_unit/new"><i class="fa fa-plus-square"></i> New SensorUnit</a></li>
-	<li class="nav__sub__item">
-	  <a href="/parts/sensor/new"><i class="fa fa-plus-square"></i> New Sensor</a></li>
+	<li class="nav__sub__item"><a href="/parts/sensorUnit/new"><i class="fa fa-plus-square"></i> New SensorUnit</a></li>
+	<li class="nav__sub__item"><a href="/parts/controlUnit/new"><i class="fa fa-plus-square"></i> New ControlUnit</a></li>
+	<li class="nav__sub__item"><a href="/parts/deepSystem/new"><i class="fa fa-plus-square"></i> New DeepSystem</a></li>
+	<li class="nav__sub__item"><a href="/parts/sensor/new"><i class="fa fa-plus-square"></i> New Sensor</a></li>
   </ul>
 </section>
 
-{% for sensorUnit in sensorUnits %}
-{{ sensorUnit.serial_nr }}
-{% endfor %}
+<section class="parts__section">
+  <h3>Sensor Unit</h3>
+  <table class="parts__table table">
+	<thead>
+	  <tr>
+	  	<th>Serial nr.</th>
+		<th>IMU</th>
+		<th>Leica</th>
+		<th>Topo</th>
+		<th>Shallow</th>
+	  </tr>
+    </thead>
+    <tbody>
+   	  {% for unit in sensorUnits %}
+   	  <tr>
+   	  	<td>{{unit.serial_nr}}
+   	  		<a href="#"><i class="fa fa-trash-o"></i></i></a>
+   	  	</td>
+   	  	<td>{{unit.imu}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.leica_cam}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td><a href="/parts/topo/{{unit.topo_sensor_id}}/">{{unit.topo_sensor_id}}</a>
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td><a href="/parts/shallow/{{unit.shallow_sensor_id}}/">{{unit.shallow_sensor_id}}</a>
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+</section>
+
+<section class="parts__section">
+  <h3>Control Unit</h3>
+  <table class="parts__table table">
+	<thead>
+	  <tr>
+	  	<th>Serial nr.</th>
+		<th>Battery</th>
+		<th>CC32</th>
+		<th>PDU</th>
+		<th>SCU</th>
+	  </tr>
+    </thead>
+    <tbody>
+   	  {% for unit in controlUnits %}
+   	  <tr>
+   	  	<td>{{unit.serial_nr}}
+   	  		<a href="#"><i class="fa fa-trash-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.battery}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.cc32}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.pdu}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td><a href="/parts/scu/{{unit.scu_id}}/">{{unit.scu_id}}</a>
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+</section>
+
+<section class="parts__section">
+  <h3>Deep System</h3>
+  <table class="parts__table table">
+	<thead>
+	  <tr>
+	  	<th>Serial nr.</th>
+		<th>Ctr. sys.</th>
+		<th>IMU</th>
+		<th>Pro Pack</th>
+		<th>Deep</th>
+	  </tr>
+    </thead>
+    <tbody>
+   	  {% for unit in deepSystems %}
+   	  <tr>
+   	  	<td>{{unit.serial_nr}}
+   	  		<a href="#"><i class="fa fa-trash-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.control_system}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.imu}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td>{{unit.pro_pack}}
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+   	  	<td><a href="/parts/deep/{{unit.deep_sensor_id}}/">{{unit.deep_sensor_id}}</a>
+   	  		<a href="#"><i class="fa fa-pencil-square-o"></i></a>
+   	  	</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+</section>
+
 {% endblock content %}
