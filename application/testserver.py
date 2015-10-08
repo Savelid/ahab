@@ -86,4 +86,4 @@ if __name__ == '__main__' :
 	# And provides a debuger in the browser
 	app.debug = True
 	# Run server. if 0.0.0.0 it listens in all public IP addresses
-	app.run(host = '0.0.0.0', port = 8080)
+	app.run(host = '0.0.0.0', port = 5000)

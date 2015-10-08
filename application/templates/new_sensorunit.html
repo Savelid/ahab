@@ -9,6 +9,7 @@
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
 <form method=post action="/parts/sensor_unit/new/">
+	{{ form.csrf_token }}
   <dl>
     {{ render_field(form.serial_nr) }}
     {{ render_field(form.imu) }}

@@ -1,25 +1,13 @@
-from flask import Flask , render_template , request , redirect , url_for, flash
-from wtforms import Form, BooleanField, TextField, StringField, PasswordField, validators
-
-from flask_wtf import Form
-from wtforms import StringField
-from wtforms.validators import DataRequired, Length, Required
-
-#from flaskext.wtf import Form
-#from wtforms.ext.appengine.db import model_form
-#from wtforms import validators
-
-#class MyForm(Form):
-#    name = StringField('name', validators=[DataRequired()])
+from application import app
+from application import forms
+from flask import render_template , request , redirect , url_for, flash
 
 # Import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
-
-app = Flask(__name__)
+from application.database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit
 
 # Create session and connect to DB
 engine = create_engine('sqlite:///ahab.db')
@@ -27,6 +15,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
+### Views ###
 
 @app.route('/')
 @app.route('/overview/')
@@ -151,34 +140,10 @@ def DeleteSCURoute(system_id):
 
 # Units pages
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = SensorUnit(form.serial_nr.data)
-        session.add(user)
-        session.commit()
-        flash('Thanks for registering')
-        return redirect(url_for('partsRoute'))
-    return render_template('register.html', form=form)
-
 @app.route('/parts/sensor_unit/new/', methods=['GET', 'POST'])
-def test123():
-	form = SensorUnitForm(request.form)
-	print form.validate()
-	if request.method == 'POST':
-		newItem = SensorUnit(serial_nr=form.serial_nr.data, imu=form.imu.data, leica_cam=form.leica_cam.data, topo_sensor_id=form.topo_sensor_id.data, shallow_sensor_id=form.shallow_sensor_id.data)
-		session.add(newItem)
-		session.commit()
-		flash("new SensorUnit created!")
-		return redirect(url_for('partsRoute'))
-
-	return render_template('new_sensorunit.html', form=form)
-
-@app.route('/parts/sensor_unit/new/old', methods=['GET', 'POST'])
 def NewSensorUnitRoute():
-	form = SensorUnitForm(request.form)
-	if form.validate_on_submit():
+	form = forms.SensorUnitForm(request.form)
+	if request.method == 'POST' and form.validate():
 		newItem = SensorUnit(serial_nr=form.serial_nr.data, imu=form.imu.data, leica_cam=form.leica_cam.data, topo_sensor_id=form.topo_sensor_id.data, shallow_sensor_id=form.shallow_sensor_id.data)
 		session.add(newItem)
 		session.commit()
@@ -186,34 +151,3 @@ def NewSensorUnitRoute():
 		return redirect(url_for('partsRoute'))
 
 	return render_template('new_sensorunit.html', form=form)
-
-### Forms ###
-
-class SensorUnitForm(Form):
-    serial_nr   	= StringField('Serial Number')
-    imu        		= StringField('IMU')
-    leica_cam 		= StringField('Leica camera')
-    topo_sensor_id		= StringField('Topo Sensor')
-    shallow_sensor_id	= StringField('Shallow Sensor')
-
-
-class RegistrationForm(Form):
-    serial_nr = TextField('Serial number', [validators.Length(min=4, max=4)])
-    email = TextField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [
-        validators.Required(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the TOS', [validators.Required()])
-
-
-##### Server stuff #####
-if __name__ == '__main__' :
-	# 
-	app.secret_key = 'super_secret_key'
-	# Debug mode let me change code without restarting the server
-	# And provides a debuger in the browser
-	app.debug = True
-	# Run server. if 0.0.0.0 it listens in all public IP addresses
-	app.run(host = '0.0.0.0', port = 8000)
