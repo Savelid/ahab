@@ -15,4 +15,16 @@
 {% endfor %}
 </dl>
 
+{% from "_formhelpers.html" import render_field %}
+<section class="form">
+  <form method=post action="/overview/">
+  {{ form.csrf_token }}
+  <dl>
+	{{ render_field(form.message) }}
+	{{ render_field(form.author) }}
+  </dl>
+  <p><input type=submit value=Save /></p>
+  </form>
+ </section>
+
 {% endblock content %}

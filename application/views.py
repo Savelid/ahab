@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Import classes for database tables
-from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit, TopoSensor, ShallowSensor, DeepSensor, Sensor, SCU
+from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit, Sensor, SCU
 
 # Create session and connect to DB
 engine = create_engine('sqlite:///ahab.db')
@@ -19,10 +19,19 @@ session = DBSession()
 ### Views ###
 
 @app.route('/')
-@app.route('/overview/')
+@app.route('/overview/', methods=['GET', 'POST'])
 def OverviewRoute():
+	form = forms.OverviewForm(request.form)
 	messages = session.query(Overview).all()
-	return render_template('overview.html', messages=messages)
+	if request.method == 'POST' and form.validate():
+		newItem = Overview(	datetime=datetime.date.today(),
+							message=form.message.data,
+							author=form.author.data)
+		session.add(newItem)
+		session.commit()
+		flash("new Message!")
+		return redirect(url_for('OverviewRoute'))
+	return render_template('overview.html', messages=messages, form=form)
 
 @app.route('/systems/')
 def SystemsRoute():
@@ -99,20 +108,20 @@ def DeletePartRoute(system_id):
 
 @app.route('/parts/sensor/new/', methods=['GET', 'POST'])
 def NewSensorRoute():
-	deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
+	#deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
 	form = forms.SensorForm(request.form)
 	if request.method == 'POST' and form.validate():
 		newItem = Sensor(	serial_nr=form.serial_nr.data,
     						sensor_type=form.sensor_type.data,
     						cat=form.cat.data,
     						fpga_id=form.fpga_id.data,
-    						laser=form.laser.data,
-    						hv_card=form.hv_card.data,
+    						#laser=form.laser.data,
+    						#hv_card=form.hv_card.data,
     						receiver_unit=form.receiver_unit.data,
-    						receiver_chip=form.receiver_chip.data,
-    						hv_card_2=form.hv_card_2.data,
+    						#receiver_chip=form.receiver_chip.data,
+    						#hv_card_2=form.hv_card_2.data,
     						receiver_unit_2=form.receiver_unit_2.data,
-    						receiver_chip_2=form.receiver_chip_2.data,
+    						#receiver_chip_2=form.receiver_chip_2.data,
     						dps_value_input_offset_t0=form.dps_value_input_offset_t0.data,
     						dps_value_input_offset_rec=form.dps_value_input_offset_rec.data,
     						dps_value_pulse_width_t0=form.dps_value_pulse_width_t0.data,
@@ -123,7 +132,7 @@ def NewSensorRoute():
 		flash("new Sensor created!")
 		return redirect(url_for('partsRoute'))
 
-	return render_template('new_sensor.html', form=form, deep_sensor_list=deep_sensor_list)
+	return render_template('new_sensor.html', form=form)
 
 @app.route('/parts/sensor/<system_id>/')
 def SensorRoute(system_id):
@@ -144,8 +153,8 @@ def DeleteSensorRoute(system_id):
 
 @app.route('/parts/scu/<system_id>/')
 def SCURoute(system_id):
-	scu = session.query(SCU).filter_by(serial_nr = system_id).one()
-	return render_template('sensor.html', sensor=scu, sensor_type='scu')
+	#scu = session.query(SCU).filter_by(serial_nr = system_id).one()
+	return render_template('child.html')
 
 @app.route('/parts/scu/<system_id>/edit')
 def EditSCURoute(system_id):
@@ -163,7 +172,11 @@ def DeleteSCURoute(system_id):
 def NewSensorUnitRoute():
 	form = forms.SensorUnitForm(request.form)
 	if request.method == 'POST' and form.validate():
-		newItem = SensorUnit(serial_nr=form.serial_nr.data, imu=form.imu.data, leica_cam=form.leica_cam.data, topo_sensor_id=form.topo_sensor_id.data, shallow_sensor_id=form.shallow_sensor_id.data)
+		newItem = SensorUnit(	serial_nr=form.serial_nr.data,
+								imu=form.imu.data,
+								#leica_cam=form.leica_cam.data,
+								topo_sensor_id=form.topo_sensor_id.data,
+								shallow_sensor_id=form.shallow_sensor_id.data)
 		session.add(newItem)
 		session.commit()
 		flash("new SensorUnit created!")
@@ -175,7 +188,11 @@ def NewSensorUnitRoute():
 def NewControlUnitRoute():
 	form = forms.ControlUnitForm(request.form)
 	if request.method == 'POST' and form.validate():
-		newItem = ControlUnit(serial_nr=form.serial_nr.data, battery=form.battery.data, cc32=form.cc32.data, pdu=form.pdu.data, scu_id=form.scu_id.data)
+		newItem = ControlUnit(	serial_nr=form.serial_nr.data,
+								battery=form.battery.data,
+								cc32=form.cc32.data,
+								pdu=form.pdu.data,
+								scu_id=form.scu_id.data)
 		session.add(newItem)
 		session.commit()
 		flash("new ControlUnit created!")

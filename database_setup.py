@@ -1,5 +1,5 @@
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Date
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, DateTime, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -71,11 +71,12 @@ class SensorUnit(Base):
 
 	imu = Column(String(10))
 	# With tables
-	leica_cam  = Column(String(10)) # TODO: add table and relation
-	topo_sensor_id = Column(String(10), ForeignKey('topo_sensor.serial_nr'))
-	topo_sensor = relationship("TopoSensor")  #, backref=backref("sensor_unit", uselist=False))
-	shallow_sensor_id = Column(String(10), ForeignKey('shallow_sensor.serial_nr'))
-	shallow_sensor = relationship("ShallowSensor")  #, backref=backref("sensor_unit", uselist=False))
+	leica_cam_id  = Column(String(10), ForeignKey('leica_cam.serial_nr'))
+	leica_cam = relationship("LeicaCam")
+	topo_sensor_id = Column(String(10), ForeignKey('sensor.serial_nr'))
+	topo_sensor = relationship("Sensor", foreign_keys="SensorUnit.topo_sensor_id")
+	shallow_sensor_id = Column(String(10), ForeignKey('sensor.serial_nr'))
+	shallow_sensor = relationship("Sensor", foreign_keys="SensorUnit.shallow_sensor_id")
 
 class ControlUnit(Base):
 
@@ -90,7 +91,7 @@ class ControlUnit(Base):
 	pdu = Column(String(10))
 	# With tables
 	scu_id = Column(String(10), ForeignKey('scu.serial_nr'))
-	scu = relationship("SCU")  #, backref=backref("control_unit", uselist=False))
+	scu = relationship("SCU")
 
 class DeepSystem(Base):
 
@@ -104,8 +105,8 @@ class DeepSystem(Base):
 	imu = Column(String(10))
 	pro_pack = Column(String(10))
 	# With tables
-	deep_sensor_id = Column(String(10), ForeignKey('deep_sensor.serial_nr'))
-	deep_sensor = relationship("DeepSensor")  #, backref=backref("deep_system", uselist=False))
+	deep_sensor_id = Column(String(10), ForeignKey('sensor.serial_nr'))
+	deep_sensor = relationship("Sensor", foreign_keys="DeepSystem.deep_sensor_id")
 
 class SCU(Base):
 
@@ -114,7 +115,7 @@ class SCU(Base):
 	id = Column(Integer, primary_key = True)
 	serial_nr = Column(String(10))
 
-	# configuration ??
+	configuration = Column(String(20))
 	digitaizer1 = Column(String(10))
 	digitaizer2 = Column(String(10))
 	sat = Column(String(10))
@@ -122,66 +123,7 @@ class SCU(Base):
 	version = Column(String(20))
 	status = Column(String(30))
 
-class TopoSensor(Base):
-
-	__tablename__ = 'topo_sensor'
-
-	id = Column(Integer, primary_key = True)
-	serial_nr = Column(String(10))
-
-	cat = Column(String(10))
-	fpga_id = Column(String(10))
-	laser = Column(String(10))
-	hv_card = Column(String(10)) # TODO Add relationship??
-	receiver_unit = Column(String(10))
-	receiver_chip = Column(String(10))
-	dps_value_input_offset_t0 = Column(Integer)
-	dps_value_input_offset_rec = Column(Integer)
-	dps_value_pulse_width_t0 = Column(Integer)
-	dps_value_pulse_width_rec = Column(Integer)
-	status = Column(String(30))
-
-class ShallowSensor(Base):
-
-	__tablename__ = 'shallow_sensor'
-
-	id = Column(Integer, primary_key = True)
-	serial_nr = Column(String(10))
-
-	cat = Column(String(10))
-	fpga_id = Column(String(10))
-	laser = Column(String(10))
-	hv_card = Column(String(10)) # TODO Add relationship??
-	receiver_unit = Column(String(10))
-	receiver_chip = Column(String(10))
-	dps_value_input_offset_t0 = Column(Integer)
-	dps_value_input_offset_rec = Column(Integer)
-	dps_value_pulse_width_t0 = Column(Integer)
-	dps_value_pulse_width_rec = Column(Integer)
-	status = Column(String(30))
-
-class DeepSensor(Base):
-
-	__tablename__ = 'deep_sensor'
-
-	id = Column(Integer, primary_key = True)
-	serial_nr = Column(String(10))
-
-	cat = Column(String(10))
-	fpga_id = Column(String(10))
-	laser = Column(String(10)) # TODO Add relationship
-	hv_card = Column(String(10)) # TODO Add relationship
-	receiver_unit = Column(String(10))
-	receiver_chip = Column(String(10)) # TODO Add relationship
-	hv_card_2 = Column(String(10)) # TODO Add relationship
-	receiver_unit_2 = Column(String(10))
-	receiver_chip_2 = Column(String(10)) # TODO Add relationship
-	dps_value_input_offset_t0 = Column(Integer)
-	dps_value_input_offset_rec = Column(Integer)
-	dps_value_pulse_width_t0 = Column(Integer)
-	dps_value_pulse_width_rec = Column(Integer)
-	status = Column(String(30))
-
+# specific foreign_keys needed since there are more than one reference to this table
 class Sensor(Base):
 
 	__tablename__ = 'sensor'
@@ -192,32 +134,89 @@ class Sensor(Base):
 
 	cat = Column(String(10))
 	fpga_id = Column(String(10))
-	laser = Column(String(10)) # TODO Add relationship
-	hv_card = Column(String(10)) # TODO Add relationship
+	laser_id = Column(String(10), ForeignKey('laser.serial_nr'))
+	laser = relationship("Laser")
+	hv_card_id = Column(String(10), ForeignKey('hv_card.serial_nr'))
+	hv_card = relationship("HVCard", foreign_keys="Sensor.hv_card_id")
 	receiver_unit = Column(String(10))
-	receiver_chip = Column(String(10)) # TODO Add relationship
-	hv_card_2 = Column(String(10)) # TODO Add relationship
+	receiver_chip_id = Column(String(10), ForeignKey('receiver_chip.serial_nr'))
+	receiver_chip = relationship("ReceiverChip", foreign_keys="Sensor.receiver_chip_id")
+	hv_card_2_id = Column(String(10), ForeignKey('hv_card.serial_nr'))
+	hv_card_2 = relationship("HVCard", foreign_keys="Sensor.hv_card_2_id")
 	receiver_unit_2 = Column(String(10))
-	receiver_chip_2 = Column(String(10)) # TODO Add relationship
+	receiver_chip_2_id = Column(String(10), ForeignKey('receiver_chip.serial_nr'))
+	receiver_chip_2 = relationship("ReceiverChip", foreign_keys="Sensor.receiver_chip_2_id")
 	dps_value_input_offset_t0 = Column(Integer)
 	dps_value_input_offset_rec = Column(Integer)
 	dps_value_pulse_width_t0 = Column(Integer)
 	dps_value_pulse_width_rec = Column(Integer)
 	status = Column(String(30))
 
-# class HVCard(Base):
+# specific foreign_keys needed since there are more than one reference to this table
+class HVCard(Base):
 
-# 	__tablename__ = 'hv_card'
+	__tablename__ = 'hv_card'
 
-# 	serial_nr = Column(String(10), primary_key = True)
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
 
-# 	art_nr = Column(String(20))
-# 	k_value
-# 	m_value
+	configuration = Column(String(20))
+	art_nr = Column(String(20))
+	k_value = Column(Float)
+	m_value = Column(Float)
+	v_0 = Column(Float)
+	v_500 = Column(Float)
+	v_1000 = Column(Float)
+	v_1500 = Column(Float)
+	v_2000 = Column(Float)
+	v_2500 = Column(Float)
+	v_3000 = Column(Float)
+	v_3250 = Column(Float)
 
-# 	hv_module ??
+class Laser(Base):
 
-# # TODO add rest of exel sheet
+	__tablename__ = 'laser'
+
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+
+	v_0 = Column(Float)
+	v_5 = Column(Float)
+	v_10 = Column(Float)
+	v_15 = Column(Float)
+	v_20 = Column(Float)
+	v_25 = Column(Float)
+	v_30 = Column(Float)
+	v_40 = Column(Float)
+	v_50 = Column(Float)
+	v_60 = Column(Float)
+	v_70 = Column(Float)
+	v_80 = Column(Float)
+	v_90 = Column(Float)
+	v_100 = Column(Float)
+
+class LeicaCam(Base):
+
+	__tablename__ = 'leica_cam'
+
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+
+	configuration = Column(String(20))
+	breakdown = Column(Integer)
+	operating_voltage = Column(Integer)
+
+# specific foreign_keys needed since there are more than one reference to this table
+class ReceiverChip(Base):
+
+	__tablename__ = 'receiver_chip'
+
+	id = Column(Integer, primary_key = True)
+	serial_nr = Column(String(10))
+
+	unit = Column(String(30))
+	firmware = Column(String(10))
+	art_nr = Column(String(20))
 
 
 
