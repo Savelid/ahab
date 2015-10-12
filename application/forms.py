@@ -5,19 +5,6 @@ from flask_wtf import Form
 from wtforms import StringField
 from wtforms.validators import Length, Required
 
-# Import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-# Import classes for database tables
-from database_setup import Base, Overview, System, SystemStatus, DeepSystem, SensorUnit, ControlUnit, Sensor, SCU
-
-# Create session and connect to DB
-engine = create_engine('sqlite:///ahab.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind = engine)
-session = DBSession()
-
 ### Forms ###
 
 class SensorUnitForm(Form):
@@ -40,7 +27,7 @@ class DeepSystemForm(Form):
     imu                 = StringField('IMU', [validators.optional(), validators.Length(min=4, max=4)])
     pro_pack            = StringField('Pro Pack', [validators.optional(), validators.Length(min=4, max=4)])
     deep_sensor_list    = session.query(Sensor).filter_by(sensor_type = 'deep').all()
-    deep_sensor_fake    = SelectField(u'Deep Sensor Test', choices=[(a.serial_nr, a.serial_nr) for a in deep_sensor_list])
+   # deep_sensor_fake    = SelectField(u'Deep Sensor Test', choices=[(a.serial_nr, a.serial_nr) for a in deep_sensor_list])
     deep_sensor_id      = StringField('Deep Sensor', [validators.Length(min=4, max=4)])
 
 class SensorForm(Form):
